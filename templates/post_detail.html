@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/CSS/post_detail.css">
+    <link rel="stylesheet" href="/static/CSS/all.css">
+    <link rel="stylesheet" href="/static/CSS/bootstrap.css">
+</head>
+<div class="header">
+    <span class="login-status">{{ session['user_now']['username'] }}已登录  <a href="/login_out">退出</a></span>
+</div>
+
+<ul class="bar">
+    <li class="item">
+        <a class="link" href="/rawdata/id={{ stu_id }}">具体细项</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/detail/id={{stu_id}}">总体情况</a>
+    </li>
+    {% if session['user_now']['identity']!="student" %}
+    <li class="item">
+        <a class="link" href="/compare/id={{stu_id}}">对比</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/student/1">返回学生目录</a>
+    </li>
+    {% endif %}
+    <li class="item">
+        <a class="link" href="/post">论坛</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/ai_testing">ai问答</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/resource">文件下载</a>
+    </li>
+</ul>
+
+<body>
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="flash-container" id="flash-container">
+            {% for message in messages %}
+                <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.body }}</p>
+        <p>发布于 {{ post.timestamp }}，作者 {{ post.user_id }}</p>
+
+        <hr>
+
+        <h4>评论</h4>
+    {% if post.comments != 0 %}
+        {% for comment in post.comments %}
+            <div class="comment">
+                <p>{{ comment.body }}</p>
+                <p>评论于 {{ comment.timestamp }}，评论者 {{ comment.user_id }}</p>
+            </div>
+            <hr>
+        {% endfor %}
+    {% endif %}
+        <form method="POST" action="{{ url_for('post_detail', post_id=post.id) }}">
+            <div class="form-group">
+                <label for="body">评论内容</label>
+                <textarea id="body" class="form-control" name="body" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">添加评论</button>
+        </form>
+    </main>
+
+<script>
+        // 显示flash消息的容器
+        var flashContainer = document.getElementById('flash-container');
+        if (flashContainer) {
+            flashContainer.style.display = 'block';
+
+            // 5秒后隐藏flash消息
+            setTimeout(function() {
+                flashContainer.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

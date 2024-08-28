@@ -1,0 +1,44 @@
+.header {
+            padding: 10px 50px;
+            text-align: right;
+            background: linear-gradient(to right, #6ab04c, #bfceb6);
+            overflow: hidden;
+        }
+.login-status {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #ddd;
+            border-radius: 5px;
+        }
+
+/* Overall navbar styling */
+.bar {
+    display: flex; /* Use Flexbox for horizontal layout */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: #d0f0c0; /* Light green background */
+    border-radius: 5px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Styling for list items */
+.item {
+    margin: 0;
+}
+
+/* Styling for links */
+.link {
+    display: block;
+    padding: 10px 20px;
+    color: #004d00; /* Darker green for text */
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hover effect for links */
+.link:hover {
+    background-color: #b0e57c; /* Slightly darker green for hover effect */
+    color: #003300; /* Even darker green for text on hover */
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/static/CSS/bootstrap.css">
+    <link rel="stylesheet" href="/static/CSS/login_out.css">
+</head>
+<body>
+<div class="container">
+        <div class="content">
+            <h1>确认退出登录</h1>
+            <p>登录人:{{session['user_now']['username']}}</p>
+            <div class="confirmation">
+                <form method="post" >
+                <button type="submit">确认退出</button></form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

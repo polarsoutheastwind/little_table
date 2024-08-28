@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大语言模型问答系统</title>
+    <link rel="stylesheet" href="/static/CSS/ai.css">
+    <link rel="stylesheet" href="/static/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/CSS/all.css">
+</head>
+<body>
+<div class="header">
+    <span class="login-status">{{ session['user_now']['username'] }} 已登录 <a href="/login_out">退出</a></span>
+</div>
+
+<ul class="bar">
+    <li class="item">
+        <a class="link" href="/rawdata/id={{ stu_id }}">具体细项</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/detail/id={{stu_id}}">总体情况</a>
+    </li>
+    {% if session['user_now']['identity']!="student" %}
+    <li class="item">
+        <a class="link" href="/compare/id={{stu_id}}">对比</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/student/1">返回学生目录</a>
+    </li>
+    {% endif %}
+    <li class="item">
+        <a class="link" href="/post">论坛</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/ai_testing">ai问答</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/resource">文件下载</a>
+    </li>
+</ul>
+
+<div class="main-container">
+    <div class="sidebar" onclick="toggleSidebar()">
+        <div class="sidebar-title">
+            <h3>边栏</h3>
+        </div>
+        <div class="sidebar-content">
+            <div class="button-list">
+                <button id="end-conversation" type="button">结束对话</button>
+                <button id="start-new-conversation" type="button">开启新对话</button>
+                <a href="/dialogue_history"><button id="query-history" type="button">查询对话记录</button></a>
+            </div>
+        </div>
+    </div>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>大语言模型问答系统</h1>
+        </div>
+        <div class="chat-history" id="chatHistory">
+            <!-- 聊天记录将在这里动态添加 -->
+        </div>
+        <form class="chat-input-form" method="post">
+            <label for="chatInput"></label>
+            <input type="text" maxlength="50" class="chat-input" id="chatInput" name="user_message" placeholder="请输入您的问题...">
+            <button type="submit" class="chat-submit">发送</button>
+        </form>
+    </div>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const chatForm = document.querySelector('.chat-input-form');
+    const chatInput = document.getElementById('chatInput');
+    const chatHistory = document.getElementById('chatHistory');
+
+    // 监听表单提交事件
+    chatForm.addEventListener('submit', function(event) {
+        event.preventDefault();  // 阻止表单的默认提交行为
+        const userMessage = chatInput.value.trim();
+
+        if (userMessage) {
+            // 将用户消息显示到聊天记录中
+            addMessageToChat('user', userMessage);
+            chatInput.value = '';  // 清空输入框
+
+            // 发送用户消息到后端
+            sendMessageToBackend(userMessage);
+        } else {
+            alert("请输入内容后再提交！");
+        }
+    });
+
+    function addMessageToChat(sender, message) {
+        const messageElement = document.createElement('div');
+        messageElement.classList.add('chat-message');
+        if (sender === 'user') {
+            messageElement.classList.add('chat-user-message');
+        } else if (sender === 'assistant') {
+            messageElement.classList.add('chat-assistant-message');
+        }
+        messageElement.textContent = message;
+        chatHistory.appendChild(messageElement);
+        chatHistory.scrollTop = chatHistory.scrollHeight;  // 保持滚动在底部
+    }
+
+    function sendMessageToBackend(message) {
+        fetch('/ai_testing', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ user_message: message }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // 从后端接收AI的回复
+            if (data && data.reply) {
+                addMessageToChat('assistant', data.reply);
+            } else {
+                alert("AI 未能返回有效的回复，请重试。");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("发送请求时发生错误，请稍后重试。");
+        });
+    }
+
+    window.toggleSidebar = function() {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('collapsed');
+    };
+});
+</script>
+<script>
+    document.getElementById('end-conversation').addEventListener('click', function() {
+            fetch('/ai_testing', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data: '结束对话' }),
+        })
+});
+
+document.getElementById('start-new-conversation').addEventListener('click', function() {
+    fetch('/refresh', {
+                method: 'POST',
+            }).then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
+            }).catch(error => console.error('Error:', error));
+
+});
+
+</script>
+<script>
+        window.onload = function() {
+            alert("在结束一次对话后，请先点击’结束对话‘，再点击‘开启新对话’重新开始");
+        };
+</script>
+</body>
+</html>

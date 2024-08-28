@@ -1,0 +1,63 @@
+ body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8f0; /* 浅绿色背景 */
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #008000; /* 深绿色标题 */
+            margin-top: 20px;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #008000; /* 深绿色表头 */
+            color: #fff;
+        }
+
+        tr:hover {
+            background-color: #d3ffd3; /* 鼠标悬停时的浅绿色背景 */
+        }
+
+        .high {
+            color: #008000; /* 高分标识为深绿色 */
+            font-weight: bold;
+        }
+
+        .low {
+            color: #ff0000; /* 低分标识为红色 */
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            background-color: #008000; /* 深绿色按钮 */
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .submit-btn:hover {
+            background-color: #005200; /* 按钮悬停时的深绿色 */
+        }
+        .box{
+            width: 900px;
+            height: 900px;
+            margin: 20px auto;
+        }

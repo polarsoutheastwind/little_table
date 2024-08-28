@@ -1,0 +1,125 @@
+/* 定义浅绿色系配色 */
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #388E3C;
+            --background-color: #F1F8E9;
+            --text-color: #333;
+            --card-background-color: #DCEDC8;
+            --card-shadow-color: rgba(76, 175, 80, 0.2);
+            --input-border-color: #4CAF50;
+            --button-hover-color: #66BB6A;
+            --button-text-color: white;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        main {
+            display: flex;
+            padding: 1rem;
+        }
+
+        aside {
+            width: 250px;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-right: 2rem;
+        }
+
+        .user-info {
+            margin-bottom: 2rem;
+        }
+
+        .user-info h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .filters {
+            margin-bottom: 1rem;
+        }
+
+        .filters label {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .filters input, .filters button {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--input-border-color);
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .filters input {
+            background-color: white;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        .filters button {
+            background-color: var(--primary-color);
+            color: var(--button-text-color);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 1rem;
+            border: none;
+        }
+
+        .filters button:hover {
+            background-color: var(--button-hover-color);
+        }
+
+        .chat-records-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .conversation {
+            margin-bottom: 1rem;
+        }
+
+        .chat-record {
+            background-color: var(--card-background-color);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px var(--card-shadow-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .chat-record strong {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+
+        /* 返回按钮样式 */
+        .return-button {
+            background-color: var(--primary-color);
+            color: var(--button-text-color);
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .return-button:hover {
+            background-color: var(--button-hover-color);
+        }

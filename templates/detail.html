@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ stu_id }}总体情况</title>
+    <link rel="stylesheet" href="/static/CSS/bootstrap.css">
+    <link rel="stylesheet" href="/static/CSS/detail.css">
+    <link rel="stylesheet" href="/static/CSS/all.css">
+</head>
+<body>
+{% if message %}
+        <script>alert("{{ message }}");</script>
+    {% endif %}
+<div class="header">
+    <span class="login-status">{{ session['user_now']['username'] }}已登录  <a href="/login_out">退出</a></span>
+</div>
+<ul class="bar">
+    <li class="item">
+        <a class="link" href="/rawdata/id={{ stu_id }}">具体细项</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/detail/id={{stu_id}}">总体情况</a>
+    </li>
+    {% if session['user_now']['identity']!="student" %}
+    <li class="item">
+        <a class="link" href="/compare/id={{stu_id}}">对比</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/student/1">返回学生目录</a>
+    </li>
+    {% endif %}
+    <li class="item">
+        <a class="link" href="/post">论坛</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/ai_testing">ai问答</a>
+    </li>
+    <li class="item">
+        <a class="link" href="/resource">文件下载</a>
+    </li>
+</ul>
+<h1 style="text-align: center; color: #009688;margin-top: 20px">总体情况</h1>
+
+    <h2>成绩方面</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>类型</th>
+                <th>评价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>作业成绩</td>
+                <td>{{ grade1(detail_data.homework_score) }}</td>
+            </tr>
+            <tr>
+                <td>自测题成绩</td>
+                <td>{{ grade1(detail_data.test_score) }}</td>
+            </tr>
+            <tr>
+                <td>期末成绩</td>
+                <td>{{ grade1(detail_data.end_of_period_score) }}</td>
+            </tr>
+            <tr>
+                <td>课堂发言成绩</td>
+                <td>{{ grade1(detail_data.score) }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <blockquote class="evaluate">
+    <p>{{ evaluate(detail_data.score,detail_data.homework_score,detail_data.test_score,detail_data.end_of_period_score)}}</p>
+    </blockquote>
+    <h2>做题时间花费方面</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>类型</th>
+                <th>评价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>作业花费时间</td>
+                <td>{{ grade2(detail_data.homework_time) }}</td>
+            </tr>
+            <tr>
+                <td>自测题花费时间</td>
+                <td>{{ grade2(detail_data.test_time) }}</td>
+            </tr>
+            <tr>
+                <td>作业提交时间</td>
+                <td>{{ grade3(detail_data.Submission_time_of_homework) }}</td>
+            </tr>
+            <tr>
+                <td>自测题提交时间</td>
+                <td>{{ grade3(detail_data.Submission_time_of_test) }}</td>
+            </tr>
+            <tr>
+                <td>对于作业成绩和时间的总评</td>
+                <td>{{ time_score(detail_data.homework_time,detail_data.homework_score,detail_data.homework_time_and_score) }}</td>
+            </tr>
+            <tr>
+                <td>对于自测题成绩和时间的总评</td>
+                <td>{{ time_score(detail_data.test_time,detail_data.test_score,detail_data.test_time_and_score) }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>完成数和页面方面</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>类型</th>
+                <th>评价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>作业完成数和自测题完成数</td>
+                <td><i>作业：</i>{{ grade4(detail_data.sum_number_of_homework) }}  <i>自测题：</i> {{ grade4(detail_data.sum_number_of_test)}}</td>
+            </tr>
+            <tr>
+                <td>作业和自测题观看页面总次数</td>
+                <td><i>作业：</i>{{ grade4(detail_data.sum_page_of_homework) }}  <i>自测题：</i>{{ grade4(detail_data.sum_page_of_test)}}</td>
+            </tr>
+            <tr>
+                <td>自测题笔记部分</td>
+                <td>{{ grade1(detail_data.note) }}</td>
+            </tr>
+            <tr>
+                <td>对于自测题笔记和其他部分的总评</td>
+                <td>{{note_page(detail_data.note,detail_data.sum_page_of_test,detail_data.note_and_page,detail_data.end_of_period_score)}}</td>
+            </tr>
+        </tbody>
+    </table>
+<h2>课堂方面</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>类型</th>
+                <th>评价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>签到率</td>
+                <td>{{ grade1(detail_data.Attendance_rate) }}</td>
+            </tr>
+            <tr>
+                <td>互动参与度</td>
+                <td>{{ grade1(detail_data.interaction) }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
