@@ -1,5 +1,6 @@
 from app import cur, conn
 from class_data import UserLogin
+from collections import Counter
 
 
 def is_existed(username, password):
@@ -56,3 +57,66 @@ def get_chat_history(user_id):
     cur.execute(sql, user_id)
     result = cur.fetchall()
     return result
+
+
+def select_user():
+    sql = "SELECT* FROM name_id"
+    cur.execute(sql)
+    res = cur.fetchall()
+    return res
+
+
+def sign_in(user_id):
+    sql = "SELECT * FROM course_sign_in WHERE id='%s' " % user_id
+    cur.execute(sql)
+    result = cur.fetchall()
+    return result[0]
+
+
+def all_score(user_id):
+    sql = "SELECT * FROM course_scores where id='%s' " % user_id
+    cur.execute(sql)
+    result = cur.fetchall()
+    return result[0]
+
+
+def select_user_id():
+    result = select_user()
+    user_id = [item[0] for item in result]
+    return user_id
+
+
+def select_user_name():
+    result = select_user()
+    user_name = [item[1] for item in result]
+    return user_name
+
+
+def sign_in_count(course_id):
+    result = []
+    user_id = select_user_id()
+    for item in user_id:
+        result.append(sign_in(item)[course_id])
+    result = Counter(result)
+    return result
+
+
+def all_score_sort(course_id):
+    all_score_result = []
+    user_id = select_user_id()
+    user_name = select_user_name()
+    for item in range(len(user_id)):
+        all_score_result.append(
+            {"stu_id": user_id[item], "stu_name": user_name[item], "score": all_score(user_id[item])[course_id]})
+    all_score_result.sort(key=lambda x: x['score'], reverse=True)
+    return all_score_result
+
+
+def select_course_name():
+    name = []
+    sql = "select * from course_name"
+    cur.execute(sql)
+    result = cur.fetchall()
+    for item in result:
+        name.append({"index": item[0], "name": item[1]})
+    return name
