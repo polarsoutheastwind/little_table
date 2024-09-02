@@ -1,7 +1,7 @@
+import os
 import pymysql
 from flask import Flask, render_template, request, redirect, url_for, session, jsonify, flash, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
-import os
 from simple_fuc import grade1, evaluate, grade2, time_score, grade3, grade4, note_page, score_percentage, \
     note_percentage, percen, compare1, compare2, arr_message
 
@@ -31,7 +31,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 from class_data import User, Average, Detail, Rawdata, Homework, Test, Post, Comment
 from sql_fuc import is_id_existed, is_existed, user_login, increase_comment, get_chat_history_with_time, \
-    get_chat_history
+    get_chat_history, all_score_sort, sign_in_count, select_course_name
 from ai import ai_test_data, end_conversation
 
 with app.app_context():
@@ -234,6 +234,7 @@ def ai_testing():
         data = request.json.get('data')
         if data == '结束对话':
             end_conversation()
+            return redirect(url_for('refresh'))
         elif not data:
             if not user_message:
                 return jsonify({'reply': "输入为空，重新提交"})  # 返回一个JSON响应
@@ -329,6 +330,26 @@ def resource():
 @app.route('/download/<filename>')
 def download_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+
+@app.route('/course_display', methods=['GET', 'POST'])
+def course_display():
+    course_name = select_course_name()
+    return render_template("course_display.html", course_name=course_name)
+
+
+@app.route('/course/<int:course_id>', methods=['GET', 'POST'])
+def course(course_id):
+    sign_in_result = sign_in_count(course_id)
+    all_score_result = all_score_sort(course_id)
+    return render_template("course_list.html", course_id=course_id, sign_in_result=sign_in_result,
+                           all_score_result=all_score_result)
+
+
+@app.route('/leaderboard/<int:course_id>', methods=['GET', 'POST'])
+def leaderboard(course_id):
+    all_score_result = all_score_sort(course_id)
+    return render_template("leaderboard.html", course_id=course_id, all_score_result=enumerate(all_score_result))
 
 
 if __name__ == '__main__':
